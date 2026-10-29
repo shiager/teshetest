@@ -26,7 +26,7 @@
   @keyframes fade{from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:none;}}
   .hidden{display:none!important;}
 
-  .hero{text-align:center; padding:48px 8px 28px;}
+  .hero{text-align:center; padding:48px 8px 20px;}
   .badge{
     display:inline-block; padding:6px 14px; border:1px solid var(--line);
     border-radius:999px; color:var(--gold); font-size:13px; letter-spacing:2px;
@@ -37,7 +37,7 @@
     background:linear-gradient(120deg,#ff3b5c,#ffd166 45%,#22d3ee);
     -webkit-background-clip:text; background-clip:text; color:transparent;
   }
-  .sub{color:var(--muted); font-size:15px; line-height:1.9; margin:0 0 34px;}
+  .sub{color:var(--muted); font-size:15px; line-height:1.9; margin:0 0 26px;}
   .btn{
     border:0; cursor:pointer; color:#fff; font-weight:700; letter-spacing:1px;
     border-radius:14px; transition:.18s; font-size:17px;
@@ -51,15 +51,30 @@
   .btn.ghost{
     background:var(--card2); color:var(--text); border:1px solid var(--line); padding:12px 22px;
   }
-  .tips{margin-top:34px; color:var(--muted); font-size:13px; text-align:center; line-height:1.8;}
-  .series{
-    display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:18px;
-  }
-  .series span{
-    font-size:12px; color:var(--muted); border:1px solid var(--line);
-    padding:5px 11px; border-radius:999px; background:rgba(255,255,255,.02);
-  }
+  .btn.small{font-size:13px; padding:8px 14px;}
 
+  /* 作品库选择 */
+  .lib-wrap{max-width:600px; margin:0 auto;}
+  .lib-head{display:flex; align-items:center; justify-content:space-between; margin:0 0 12px;}
+  .lib-head .t{font-size:15px; color:var(--gold); font-weight:800;}
+  .lib-head .r{display:flex; gap:8px;}
+  .lib-cards{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; text-align:left;}
+  .lib-card{
+    background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px;
+    cursor:pointer; transition:.15s;
+  }
+  .lib-card:hover{border-color:var(--blue);}
+  .lib-card.on{border-color:var(--blue); background:linear-gradient(135deg,rgba(34,211,238,.18),rgba(34,211,238,.05));}
+  .lib-card .l-name{font-size:16px; font-weight:800;}
+  .lib-card .l-count{font-size:12px; color:var(--muted); margin:4px 0 6px;}
+  .lib-card .l-check{font-size:12px; color:var(--green); opacity:0; font-weight:700;}
+  .lib-card.on .l-check{opacity:1;}
+  .pool-note{text-align:center; color:var(--muted); font-size:13px; margin:16px 0 0;}
+  .pool-note b{color:var(--gold);}
+
+  .tips{margin-top:34px; color:var(--muted); font-size:13px; text-align:center; line-height:1.8;}
+
+  /* 测试页 */
   .quiz .bar{height:8px; background:#1a2138; border-radius:99px; overflow:hidden; margin:12px 0 20px;}
   .quiz .fill{height:100%; background:linear-gradient(90deg,#22d3ee,#34d399); border-radius:99px; transition:width .25s;}
   .meta{color:var(--muted); font-size:13px; margin-bottom:14px; display:flex; justify-content:space-between;}
@@ -77,6 +92,7 @@
   .opt b{color:var(--blue); margin-right:8px;}
   .nav{display:flex; justify-content:space-between; margin-top:22px;}
 
+  /* 结果页 */
   .result-top{text-align:center; margin:16px 0 24px;}
   .type-big{
     font-size:38px; font-weight:900; letter-spacing:1px; margin:8px 0 4px;
@@ -153,9 +169,7 @@ const TYPES = {
 };
 
 /* ================= 题目（42题，情景四选一） ================= */
-/* t:维度，q:情境，o:四个具体行动选项（依次 +2 +1 -1 -2） */
 const Q = [
-  /* —— 热血 vs 冷静 —— */
   {t:"hot", q:"当朋友陷入危险时，你会？", o:["不顾一切冲过去救他","边喊边冲，但会留意周围","先观察情况再靠近","想一个完美的办法再去救他"]},
   {t:"hot", q:"面对强大的敌人，你会？", o:["正面硬刚，气势不能输","先试探两下再全力打","拉开距离寻找弱点","制定详细计划再动手"]},
   {t:"hot", q:"看到有人欺负弱小，你会？", o:["当场冲上去制止","上前大声呵斥对方","先记下来再找机会","报警或找帮手来处理"]},
@@ -163,7 +177,6 @@ const Q = [
   {t:"hot", q:"比赛落后时，你会？", o:["怒吼一声拼命追回来","加大力度全力冲刺","稳住节奏慢慢追","冷静分析还能不能翻盘"]},
   {t:"hot", q:"你更喜欢哪种战斗方式？", o:["正面强攻","气势压制对手","以守为攻","智取偷袭"]},
 
-  /* —— 外向 vs 内向 —— */
   {t:"ext", q:"难得的休息日，你会？", o:["约一堆朋友出去玩","和关系好的朋友小聚","在家休息偶尔回消息","完全一个人待着充电"]},
   {t:"ext", q:"队伍聚会时，你会？", o:["主动带气氛，全场最嗨","参与话题聊得很开心","在旁边听大家聊","找个角落安静待着"]},
   {t:"ext", q:"遇到新同伴，你会？", o:["主动搭话聊个不停","打个招呼简单认识","等对方先开口","点头示意就离开"]},
@@ -171,7 +184,6 @@ const Q = [
   {t:"ext", q:"你会怎么喊必杀技？", o:["用尽全力大声喊出来","很自然地喊出来","小声念出来","在心里默念就行"]},
   {t:"ext", q:"有心事的时候，你会？", o:["立刻找朋友倾诉","和信任的人聊一聊","犹豫很久才开口","自己慢慢消化"]},
 
-  /* —— 感性 vs 理性 —— */
   {t:"feel", q:"做重要决定时，你会？", o:["完全跟着感觉走","先听心里的声音再考虑","列出利弊再决定","完全用数据和逻辑判断"]},
   {t:"feel", q:"面对哭泣求饶的敌人，你会？", o:["心软放他一马","会犹豫一下","按规矩该怎么处理就怎么处理","该打就打绝不手软"]},
   {t:"feel", q:"判断一件事的对错，你会？", o:["看它是否打动人心","先看感受再看道理","先看道理再看感受","只看是否合理正确"]},
@@ -179,7 +191,6 @@ const Q = [
   {t:"feel", q:"朋友做了错事，你会？", o:["先安慰他理解他","先问他有什么苦衷","指出问题让他改","直接批评他做错了"]},
   {t:"feel", q:"你更相信？", o:["人心和羁绊","大多数时候相信感觉","有时相信逻辑","数据和事实"]},
 
-  /* —— 守序 vs 自由 —— */
   {t:"ord", q:"面对规则，你会？", o:["严格遵守","基本遵守","偶尔变通","规则是死的，我是活的"]},
   {t:"ord", q:"接到上级命令，你会？", o:["坚决执行","有疑问但先执行","视情况灵活处理","按自己的想法来"]},
   {t:"ord", q:"安排行程时，你会？", o:["提前做好详细计划","大致规划一下","想到哪算哪","完全随性出发"]},
@@ -187,7 +198,6 @@ const Q = [
   {t:"ord", q:"面对权威，你会？", o:["尊重并服从","认同就服从","会提出质疑","直接挑战"]},
   {t:"ord", q:"你更像哪种人？", o:["守护城市的战士","有责任感的上班族","说走就走的旅人","四处流浪的冒险者"]},
 
-  /* —— 乐观 vs 悲观 —— */
   {t:"opt", q:"身处绝境时，你会？", o:["相信一定有转机","觉得还能拼一拼","做好最坏的打算","觉得这次完了"]},
   {t:"opt", q:"遭遇失败后，你会？", o:["笑着爬起来再来","很快振作起来","会低落一阵子","消沉很久走不出来"]},
   {t:"opt", q:"下雨天，你会？", o:["看到乌云后的太阳","觉得雨会停的","担心雨越下越大","觉得又是个倒霉天"]},
@@ -195,7 +205,6 @@ const Q = [
   {t:"opt", q:"面对新挑战，你会？", o:["兴奋地迎上去","觉得可以试试","先想想失败了怎么办","担心自己做不到"]},
   {t:"opt", q:"你的口头禅更接近？", o:["总会有办法的","没事，问题不大","没那么简单吧","果然不行"]},
 
-  /* —— 理想 vs 现实 —— */
   {t:"ide", q:"你更看重？", o:["梦想和可能性","理想中带点实际","现实基础上的目标","眼前的现实"]},
   {t:"ide", q:"面对残酷的真相，你会？", o:["依然坚持理想","想办法保留理想","调整自己接受现实","完全接受现实"]},
   {t:"ide", q:"你思考问题偏向？", o:["天马行空","有创意的想法","结合实际地想","脚踏实地"]},
@@ -203,7 +212,6 @@ const Q = [
   {t:"ide", q:"你更喜欢的故事是？", o:["奇迹与希望","温暖的结局","真实带点残酷","写实与残酷"]},
   {t:"ide", q:"被说不切实际时，你会？", o:["偏要坚持梦想","会解释自己的想法","会认真反思","立刻改为现实路线"]},
 
-  /* —— 团队 vs 独行 —— */
   {t:"tea", q:"面对强敌，你会？", o:["叫上伙伴一起上","和搭档配合","能自己解决就自己来","独自解决"]},
   {t:"tea", q:"组队任务时，你会？", o:["全力配合队友","做好自己那一部分","更相信自己的判断","习惯单独行动"]},
   {t:"tea", q:"遇到困难时，你会？", o:["立刻向伙伴求助","和伙伴商量","先自己扛一阵","自己一个人扛到底"]},
@@ -212,11 +220,12 @@ const Q = [
   {t:"tea", q:"你更喜欢哪种作战方式？", o:["团队并肩作战","和搭档双人配合","偶尔单独行动","独自解决问题"]}
 ];
 
-/* ================= 角色库（172位） ================= */
+/* ================= 角色库 ================= */
 /* C(名称, 出场作品, 年龄, 性格, 身份, 类型, [热血,乐观,团队]可省略) */
 function C(n,w,a,p,i,t,x){return {n:n,w:w,a:a,p:p,i:i,t:t,x:x||null};}
-const CH = [
-  /* —— 假面骑士 —— */
+
+const LIB_RIDER = [
+  /* —— 假面骑士（原74 + 新20） —— */
   C("本乡猛","假面骑士(1971)",24,"背负改造人宿命却坚守正义的孤高战士","科学家/假面骑士1号","ISTJ"),
   C("一文字隼人","假面骑士(1971)",23,"热血开朗、重情重义的摄影青年","摄影师/假面骑士2号","ESTP"),
   C("风见志郎","假面骑士V3",22,"背负仇恨却心怀正义，燃尽自己守护他人","假面骑士V3","ENFJ"),
@@ -239,16 +248,22 @@ const CH = [
   C("乾巧","假面骑士555",20,"外表冷漠、内心温柔的孤独青年","假面骑士Faiz","ISTP",[60,45,40]),
   C("草加雅人","假面骑士555",21,"表面温和、内里精于算计的优等生","假面骑士凯撒","ESTJ",[55,45,35]),
   C("木场勇治","假面骑士555",25,"温柔善良却坠入黑暗的悲剧青年","奥菲以诺/假面骑士","INFP"),
+  C("三原修二","假面骑士555",20,"温柔软弱、被迫战斗的孤独青年","假面骑士Delta","ISTP"),
   C("剑崎一真","假面骑士剑",23,"热血直率，为守护人类与朋友不惜一切","假面骑士剑","ENFP"),
   C("相川始","假面骑士剑",24,"沉默寡言，背负怪物宿命的孤高骑士","假面骑士卡利斯","INTJ",[40,35,30]),
   C("橘朔也","假面骑士剑",26,"认真严谨，被恐惧与责任困扰的战士","假面骑士加连","ISTJ"),
   C("天道总司","假面骑士Kabuto",25,"自信到极致，行天之道总司一切的天才","假面骑士Kabuto","ENTJ",[65,55,40]),
   C("加贺美新","假面骑士Kabuto",25,"热血努力，十分重视同伴的战士","假面骑士钢斗","ESFJ"),
+  C("神代剑","假面骑士Kabuto",25,"高贵傲慢、才华横溢的名门少爷","假面骑士Sasword","ESTJ"),
   C("野上良太郎","假面骑士电王",19,"倒霉却温柔，被异魔神附身的少年","假面骑士电王","INFP",[42,55,62]),
   C("桃塔罗斯","假面骑士电王","不详","冲动暴躁、重情重义的红鬼","异魔神/桃塔罗斯","ESTP",[95,85,72]),
   C("樱井侑斗","假面骑士电王",20,"温柔坚定，为守护时间而战的青年","假面骑士Zeronos","ISFJ"),
+  C("齐格","假面骑士电王","不详","优雅高傲、追求华丽的异魔神","天鹅异魔神","ESFJ"),
   C("红渡","假面骑士Kiva",20,"内向腼腆，继承王者血脉的青年","假面骑士Kiva","INFP",[44,55,60]),
+  C("名护启介","假面骑士Kiva",25,"热血固执、以猎人为傲的青年","假面骑士Ixa","ESTJ"),
   C("门矢士","假面骑士Decade","不详","慵懒毒舌，游走世界的破坏者","假面骑士Decade","INTJ",[45,50,35]),
+  C("海东大树","假面骑士Decade","不详","神出鬼没、随性贪玩的小偷","假面骑士Diend","ENTP"),
+  C("小野寺雄介","假面骑士Decade",20,"热血单纯、正义感强的青年","假面骑士空我","ENFP"),
   C("左翔太郎","假面骑士W",25,"自称硬汉的侦探，感性又重情","侦探/假面骑士W","ISTP",[58,52,58]),
   C("菲利普","假面骑士W","不详","知识渊博、好奇一切的地球记忆少年","假面骑士W","INTP",[28,50,48]),
   C("大道克己","假面骑士W","不详","冷酷无情、追求力量的佣兵","假面骑士Eternal","ISTP"),
@@ -257,28 +272,42 @@ const CH = [
   C("火野映司","假面骑士OOO",22,"无欲无求却极度善良的旅人","假面骑士OOO","ENFP"),
   C("安库","假面骑士OOO","不详","傲慢利己、渴望生命的手掌怪人","怪人/安库","INTJ",[35,30,25]),
   C("伊达明","假面骑士OOO",32,"豪爽仗义、为救人而战的医生","假面骑士Birth","ENFJ"),
+  C("泉比奈","假面骑士OOO",20,"温柔善良、怪力惊人的少女","普通女孩","ISFJ"),
+  C("後藤慎太郎","假面骑士OOO",26,"认真严谨、渴望力量的前刑警","假面骑士Birth","ISTJ"),
   C("如月弦太朗","假面骑士Fourze",19,"坚信友情，要与所有人做朋友的热血少年","假面骑士Fourze","ENFP",[95,92,90]),
   C("朔田流星","假面骑士Fourze",19,"冷静认真的转学生，暗中执行任务","假面骑士Meteor","ISFJ"),
   C("操真晴人","假面骑士Wizard",24,"爱耍帅，怀抱希望之光的魔法师","假面骑士Wizard","ESFP"),
+  C("仁藤攻介","假面骑士Wizard",23,"开朗贪吃、乐观的考古青年","假面骑士Beast","ESFP"),
+  C("稻森真由","假面骑士Wizard",18,"温柔坚定、追寻自我的少女","假面骑士Mage","INFP"),
   C("葛叶纮汰","假面骑士铠武",21,"乐观努力的街舞青年，被命运卷入战斗","假面骑士铠武","ENFP"),
   C("驱纹戒斗","假面骑士铠武",22,"追求力量、渴望强大的孤高战士","假面骑士巴隆","ISTP"),
+  C("吴岛贵虎","假面骑士铠武",26,"沉稳冷静、背负家族责任的领袖","假面骑士斩月","ENTJ"),
+  C("吴岛光实","假面骑士铠武",20,"内向压抑、逐渐黑化的青年","假面骑士龙玄","INTJ"),
   C("泊进之介","假面骑士Drive",25,"热血认真的刑警，正义感爆棚","刑警/假面骑士Drive","ESTJ",[78,72,70]),
   C("诗岛刚","假面骑士Drive",20,"自由奔放、开朗活泼的年轻战士","假面骑士Mach","ESTP"),
   C("诗岛雾子","假面骑士Drive",25,"冷静干练、能力出众的女警","特状课刑警","ISTJ"),
   C("天空寺尊","假面骑士Ghost",20,"为复活而战、珍视生命的温柔青年","假面骑士Ghost","INFP",[66,76,72]),
+  C("天空寺诚","假面骑士Ghost",20,"冷静寡言、为妹而战的青年","假面骑士Specter","ISTJ"),
   C("宝生永梦","假面骑士Ex-Aid",24,"天才医生与游戏玩家，守护患者笑容","医生/假面骑士Ex-Aid","ENFP"),
   C("镜飞彩","假面骑士Ex-Aid",27,"天才外科医生，冷静理性追求完美","医生/假面骑士Brave","ISTJ"),
+  C("花家大我","假面骑士Ex-Aid",29,"冷酷孤傲、外冷内热的医生","假面骑士Snipe","ISTP"),
+  C("九条贵利矢","假面骑士Ex-Aid",27,"轻浮爱开玩笑、重视朋友的法医","假面骑士Lazer","ENTP"),
+  C("帕拉德","假面骑士Ex-Aid","不详","天真好战、追求刺激的游戏病毒","游戏病毒","ENFP"),
   C("檀黎斗","假面骑士Ex-Aid",28,"狂妄自恋的游戏之神，天才疯子","游戏开发者/假面骑士Genm","ENTP",[82,92,40]),
   C("桐生战兔","假面骑士Build",26,"天才物理学家，开朗自信又温柔","物理学家/假面骑士Build","ENTP",[70,78,68]),
   C("万丈龙我","假面骑士Build",23,"热血直率的肌肉笨蛋，重情重义","假面骑士Cross-Z","ESTP",[95,85,72]),
   C("猿渡一海","假面骑士Build",25,"热血豪爽、重视同伴的农场主","假面骑士Grease","ESFP"),
+  C("冰室幻德","假面骑士Build",32,"冷酷强硬、怀揣野心的政治家","假面骑士Rogue","INTJ"),
   C("艾伯鲁特","假面骑士Build","不详","冷酷狡诈、玩弄人心的外星生命体","假面骑士Evol","INTJ"),
   C("常磐庄吾","假面骑士Zi-O",19,"想成为王的乐观少年，温柔坚定","假面骑士Zi-O","ENFP",[88,90,78]),
   C("明光院芸津","假面骑士Zi-O",19,"冷静克制的未来战士，责任感强","假面骑士Geiz","ISTJ"),
   C("沃兹","假面骑士Zi-O","不详","神秘忠诚，永远追随王的预言者","家臣/假面骑士Woz","ENFJ"),
+  C("月读","假面骑士Zi-O","不详","冷静温柔、来自未来的少女","神秘少女","INFJ"),
   C("飞电或人","假面骑士Zero-One",23,"梦想家搞笑艺人社长，守护人机笑容","社长/假面骑士Zero-One","ENFP",[85,90,78]),
   C("不破谏","假面骑士Zero-One",26,"热血强硬、痛恨人机兵的特种兵","假面骑士巴尔坎","ISTJ"),
   C("天津垓","假面骑士Zero-One",40,"掌控一切的冷血企业家，野心勃勃","企业家/假面骑士千骑","INTJ"),
+  C("迅","假面骑士Zero-One","不详","活泼天真、渴望自由的人机兵","人机兵","ENFP"),
+  C("灭","假面骑士Zero-One","不详","冷酷坚定、视机如子的领导者","假面骑士灭亡迅雷","INTJ"),
   C("神山飞羽真","假面骑士Saber",24,"小说家，相信故事能带来希望","小说家/假面骑士Saber","ENFP",[70,85,76]),
   C("富加宫贤人","假面骑士Saber",24,"温柔坚定，背负预言宿命的剑士","假面骑士剑斩","INFJ"),
   C("新堂伦太郎","假面骑士Saber",23,"正直温柔、守护水之意志的剑士","假面骑士Blades","ESFJ"),
@@ -290,12 +319,17 @@ const CH = [
   C("浮世英寿","假面骑士Geats","不详","深不可测、算无遗策的欲望神","假面骑士Geats","INTJ",[50,45,35]),
   C("樱井景和","假面骑士Geats",22,"善良单纯，渴望世界和平的大学生","假面骑士Tycoon","INFP",[62,82,74]),
   C("祢音","假面骑士Geats",19,"开朗可爱、人气爆棚的网红","假面骑士Na-Go","ESFP"),
-  C("吾妻道长","假面骑士Geats",22,"冷酷执拗、为力量不择手段的青年","假面骑士Buffa","ISTP"),
+  C("吾妻道长","假面骑士Geats",22,"冷酷执拗、为力量不择手段的青年","假面骑士Buffa","ISTP")
+];
 
-  /* —— 超级战队 —— */
+const LIB_SENTAI = [
+  /* —— 超级战队（原46 + 新15） —— */
   C("海城刚","秘密战队五连者",24,"热血勇猛、雷厉风行的队长","赤连者","ESTJ"),
   C("檄","恐龙战队兽连者",24,"热血直率、守护地球的战士","霸王龙连者","ESTJ"),
+  C("谷丽华","恐龙战队兽连者",22,"温柔聪慧、团队的知性担当","翼手龙连者","ISFJ"),
+  C("天火星亮","五星战队大连者",23,"热血勇猛、中华料理店长的队长","龙连者","ESFJ"),
   C("佐助","忍者战队隐连者",20,"乐观调皮却关键时刻可靠的忍者","红忍者","ENFP",[85,88,78]),
+  C("鹤姬","忍者战队隐连者",21,"温柔高雅、守护家族的领袖","白忍者","ISFJ"),
   C("阵内恭介","激走战队车连者",22,"自由奔放、车技超群的赛车手","红车手","ESTP"),
   C("伊达健太","电磁战队百万连者",20,"开朗热血、为地球而战的高中生","百万红","ENFP"),
   C("龙马","星兽战队银河人",25,"勇猛果敢、如烈火般的战士","银河红","ENFJ"),
@@ -305,9 +339,17 @@ const CH = [
   C("椎名鹰介","忍风战队破里剑者",20,"热血开朗、重情重义的忍者","破里剑红","ENFP"),
   C("伯亚凌驾","爆龙战队暴连者",21,"热血冲动、嗓门超大的元气男","暴红","ESFP",[92,88,75]),
   C("赤座伴番","特搜战队刑事连者",22,"热血冲劲、正义感爆棚的新人刑警","刑事红","ESTP"),
+  C("巴恩","特搜战队刑事连者",22,"冷静精英、追求完美的战士","刑事蓝","ISTJ"),
+  C("茉莉","特搜战队刑事连者",21,"温柔体贴、照顾大家的队员","刑事黄","ISFJ"),
   C("小津魁","魔法战队魔法连者",20,"勇敢热血、重视家人的魔法少年","魔法红","ENFP",[88,86,80]),
+  C("小津翼","魔法战队魔法连者",22,"轻浮花心、疼妹妹的哥哥","魔法黄","ESTP"),
+  C("小津丽","魔法战队魔法连者",23,"可靠温柔、料理拿手的姐姐","魔法粉","ESFJ"),
+  C("小津芳香","魔法战队魔法连者",46,"温柔坚强、守护孩子们的母亲","魔法蓝","ESFJ"),
   C("明石晓","轰轰战队冒险者",25,"冷静睿智、追寻宝藏的冒险家","冒险红","ENTJ",[72,72,62]),
   C("汉堂将","兽拳战队激气连者",22,"沉默寡言、野性直觉的战士","激气红","ISFP",[68,52,50]),
+  C("深见烈","兽拳战队激气连者",20,"轻浮爱玩、关键时刻可靠的战士","激气蓝","ENTP"),
+  C("宇崎兰","兽拳战队激气连者",21,"温柔爽朗、照顾队友的大姐","激气黄","ESFJ"),
+  C("深见豪","兽拳战队激气连者",24,"热血豪放、实力强劲的哥哥","激气紫","ESTP"),
   C("江角走辅","炎神战队轰音者",21,"元气满满、勇往直前的赛车手","轰音红","ESFP"),
   C("志叶丈瑠","侍战队真剑者",25,"冷静孤高、背负领主宿命的剑士","真剑红","INTJ",[55,45,40]),
   C("池波流之介","侍战队真剑者",21,"热血耿直、忠于主君的武士","真剑蓝","ESFJ",[78,75,74]),
@@ -316,8 +358,12 @@ const CH = [
   C("马贝拉斯","海贼战队豪快者","不详","自信豪迈、追求自由的海贼船长","豪快红","ENTJ",[70,75,60]),
   C("乔·基布肯","海贼战队豪快者","不详","冷静寡言、剑术高超的战士","豪快蓝","ISTP"),
   C("露卡","海贼战队豪快者","不详","冷静果断、视财如命的女海贼","豪快黄","ESTP",[60,50,42]),
+  C("堂·德戈","海贼战队豪快者","不详","自由随性、贪吃幽默的海贼","豪快绿","ISTP"),
+  C("艾穆","海贼战队豪快者","不详","温柔善良、逃家公主","豪快粉","INFP"),
   C("樱田弘","特命战队Go-Busters",22,"冷静克制、身负使命的特工","Red Buster","ISTJ"),
   C("岩崎龙司","特命战队Go-Busters",25,"热血开朗、格斗高超的特工","Blue Buster","ESTP"),
+  C("宇佐见洋子","特命战队Go-Busters",18,"好胜活泼、战斗天才少女","Yellow Buster","ESTJ"),
+  C("阵雅人","特命战队Go-Busters",26,"热血开朗、话多的特工","Beet Buster","ENFP"),
   C("桐生大吾","兽电战队强龙者",20,"野性热血、自称为王的男人","强龙红","ESFP",[90,88,75]),
   C("伊安·约兰","兽电战队强龙者",24,"冷静帅气、身负宿命的骑士","强龙黑","ISTP"),
   C("空蝉丸","兽电战队强龙者","不详","热血豪爽、来自古代的武士","强龙金","ESFP"),
@@ -338,13 +384,16 @@ const CH = [
   C("猿原真一","暴太郎战队Donbrothers",21,"自由随性、脑洞清奇的青年","猴兄弟","ISTP",[60,65,45]),
   C("基拉","王样战队君王者",18,"善良热血、自称邪恶之王的少年","锹形王者","ENFP",[92,90,80]),
   C("璃塔","王样战队君王者",20,"公正无私、贯彻绝对正义的法官","蝴蝶王者","ISTJ",[42,48,52]),
-  C("阳马","王样战队君王者",21,"天才自负、热爱科技的国王","蜻蜓王者","ENTP",[70,75,45]),
+  C("阳马","王样战队君王者",21,"天才自负、热爱科技的国王","蜻蜓王者","ENTP",[70,75,45])
+];
 
-  /* —— 奥特曼 —— */
+const LIB_ULTRA = [
+  /* —— 奥特曼（原33 + 新10） —— */
   C("早田进","奥特曼",25,"冷静沉着、责任心强的科特队队员","科特队队员/奥特曼","ISTJ"),
   C("诸星团","赛文奥特曼",24,"理性坚定、守护地球的外星战士","奥特警备队/赛文","ENTJ"),
   C("乡秀树","归来的奥特曼",22,"热血温柔、不屈不挠的战士","MAT队员/杰克奥特曼","ENFJ"),
   C("北斗星司","艾斯奥特曼",22,"热血善良，与伙伴并肩作战","TAC队员/艾斯奥特曼","ENFP"),
+  C("南夕子","艾斯奥特曼",21,"温柔善良、来自月球的少女","艾斯人间体之一","INFP"),
   C("东光太郎","泰罗奥特曼",22,"阳光开朗、充满活力的青年","ZAT队员/泰罗奥特曼","ESFP",[88,90,80]),
   C("凤源","雷欧奥特曼",22,"背负母星毁灭之痛，坚毅孤独的战士","雷欧奥特曼","ISTP",[62,32,38]),
   C("矢的猛","爱迪奥特曼",25,"温柔耐心、如教师般守护他人","教师/爱迪奥特曼","ESFJ"),
@@ -353,14 +402,23 @@ const CH = [
   C("高山我梦","盖亚奥特曼",21,"天才科学家，为地球而战的少年","炼金之星/盖亚奥特曼","INTP",[48,66,56]),
   C("藤宫博也","盖亚奥特曼",22,"冷静孤傲，走上极端之路的天才","阿古茹奥特曼","INTJ",[40,30,25]),
   C("春野武藏","高斯奥特曼",21,"温柔慈悲、厌恶争斗的青年","高斯奥特曼","INFJ",[45,82,72]),
+  C("东马快斗","麦克斯奥特曼",22,"热血认真、永不言弃的青年","麦克斯奥特曼","ENFP"),
   C("姬矢准","奈克瑟斯奥特曼","不详","背负伤痛、独自战斗的悲情记者","奈克瑟斯奥特曼","ISFP",[55,30,35]),
   C("千树怜","奈克瑟斯奥特曼",18,"开朗乐观、与命运抗争的少年","奈克瑟斯奥特曼","ENFP"),
   C("孤门一辉","奈克瑟斯奥特曼",22,"善良坚韧、逐渐成长的战士","夜袭队员/奈克瑟斯奥特曼","INFP"),
+  C("西条凪","奈克瑟斯奥特曼","不详","冷酷干练、内心温柔的女队长","夜袭队副队长","ISTJ"),
   C("日比野未来","梦比优斯奥特曼","不详","单纯热忱、珍视伙伴的宇宙人","梦比优斯奥特曼","ENFP"),
+  C("迫水真吾","梦比优斯奥特曼","不详","沉稳温柔、统领全局的队长","GUYS队长","ISTJ"),
   C("大空大地","艾克斯奥特曼",21,"热血认真、与数据怪兽并肩作战","Xio队员/艾克斯奥特曼","ENFP"),
   C("红凯","欧布奥特曼","不详","冷静潇洒、游历宇宙的浪客","欧布奥特曼","INTJ",[30,42,28]),
   C("朝仓陆","捷德奥特曼",18,"温柔善良、反抗父亲宿命的少年","捷德奥特曼","ENFP",[82,80,75]),
+  C("凑活海","罗布奥特曼",22,"热血直率、照顾弟弟的哥哥","罗索奥特曼","ESFJ"),
+  C("凑勇海","罗布奥特曼",19,"活泼爱玩、头脑聪明的弟弟","布鲁奥特曼","ENTP"),
+  C("凑朝阳","罗布奥特曼",18,"温柔开朗、治愈系的妹妹","格力乔奥特曼","ISFJ"),
+  C("爱染诚","罗布奥特曼","不详","自恋浮夸、怀揣执念的社长","反派社长","ESTP"),
   C("工藤优幸","泰迦奥特曼",18,"善良热忱、与三人小队一体的青年","泰迦奥特曼","ENFP"),
+  C("大田结花","泰迦奥特曼",20,"好奇心旺盛、研究怪人的少女","伊吉斯队员","INTP"),
+  C("宗谷誉","泰迦奥特曼","不详","沉默可靠、身世神秘的外星人","伊吉斯队员","ISTP"),
   C("雾崎","泰迦奥特曼","不详","优雅神秘、享受混乱的谜之男子","托雷基亚人间体","INTP"),
   C("真中剑悟","特利迦奥特曼",21,"坚信笑容、开朗温柔的植物学家","特利迦奥特曼","ENFP",[85,90,80]),
   C("明日见奏大","德凯奥特曼",20,"元气热血、充满正义感的青年","德凯奥特曼","ESFP",[90,88,80]),
@@ -373,33 +431,53 @@ const CH = [
   C("奥特之父","奥特曼","不详","威严慈爱、守护光之国的领袖","奥特之父","ESTJ",[55,60,75]),
   C("贝利亚","奥特曼","不详","堕入黑暗、野心滔天的邪恶奥特曼","贝利亚奥特曼","INTJ",[60,30,20]),
   C("托雷基亚","奥特曼","不详","嘲弄一切、游走光暗之间的智者","托雷基亚奥特曼","INTP",[25,35,20]),
-  C("神永新二","新奥特曼","不详","冷静克制、观察人类的外星来客","奥特曼(新)","INTJ"),
+  C("神永新二","新奥特曼","不详","冷静克制、观察人类的外星来客","奥特曼(新)","INTJ")
+];
 
-  /* —— 金属英雄 —— */
+const LIB_METAL = [
+  /* —— 金属英雄（原8 + 新2） —— */
   C("一条寺烈","宇宙刑事卡邦",25,"热血正义、为守护宇宙和平而战","宇宙刑事卡邦","ENFJ"),
+  C("一条寺满里","宇宙刑事卡邦",20,"温柔活泼、支持哥哥的少女","卡邦的妹妹","ISFJ"),
+  C("鹰美子","宇宙刑事卡邦",22,"冷静果敢、英姿飒爽的女战士","宇宙女刑事","ISTJ"),
   C("十文字击","宇宙刑事卡邦Type-G",25,"冷静果敢、继承卡邦之名的青年","宇宙刑事卡邦Type-G","ISTP"),
   C("伊贺电","宇宙刑事沙利班",25,"热血豪爽、嫉恶如仇的刑事","宇宙刑事沙利班","ESTJ"),
   C("剑流星","时空战士史比鲁邦",22,"爽朗热情、穿越时空的战士","时空战士史比鲁邦","ENFP"),
   C("比达","巨兽特搜Juspion",22,"热血勇敢、与巨兽并肩的少年","巨兽特搜Juspion","ENFP"),
   C("牧史郎","宇宙刑事夏伊达",24,"温柔理性、追求和平的战士","宇宙刑事夏伊达","INFP"),
   C("机器人K","机器人刑事K","不详","恪守正义、逻辑严密的机器人刑事","机器人刑事K","ISTJ"),
-  C("一郎","电脑奇侠01","不详","热血直率、拥有人心的人造人","电脑奇侠01","ESTP"),
+  C("一郎","电脑奇侠01","不详","热血直率、拥有人心的人造人","电脑奇侠01","ESTP")
+];
 
-  /* —— 牙狼 —— */
+const LIB_GARO = [
+  /* —— 牙狼（原5 + 新2） —— */
   C("冴岛钢牙","牙狼","不详","冷静孤高、背负守护者宿命的魔戒骑士","黄金骑士牙狼","ISTP"),
+  C("冴岛大河","牙狼","不详","沉稳威严、守护之道的践行者","前代黄金骑士","ISTJ"),
   C("道外流牙","牙狼","不详","热血直率、不断成长的魔戒骑士","黄金骑士牙狼(流牙)","ESTP"),
   C("凉邑零","牙狼","不详","冷酷敏锐、独来独往的魔戒骑士","绝狼","INTJ"),
   C("御月薰","牙狼",22,"温柔坚强、以画笔追寻真相的少女","画家","INFP"),
   C("冴岛雷牙","牙狼","不详","承父之志、温柔坚定的魔戒骑士","黄金骑士牙狼(雷牙)","ISFJ"),
+  C("神牙","牙狼:神之牙","不详","冷酷魅惑、堕入黑暗的骑士","黑暗骑士","INTJ")
+];
 
-  /* —— 其他特摄 —— */
+const LIB_OTHER = [
+  /* —— 其他特摄（原6 + 新1） —— */
   C("次郎","人造人间奇凯达","不详","善良温柔、拥有人心的机器人","人造人间奇凯达","INFP"),
   C("狮子丸","快杰狮子丸",22,"野性勇敢、与妖魔战斗的忍者","快杰狮子丸","ISTP"),
   C("岚","变身忍者岚",22,"沉默坚毅、背负使命的忍者","变身忍者岚","ISFP"),
   C("朝仓拓也","超光战士山齐里奥",25,"自恋天才、为守护地球而战","超光战士山齐里奥","ENTP"),
   C("龙剑道","魔弹战记龙剑道",18,"热血正义、与魔物战斗的少年","龙剑道","ENFP"),
-  C("翔直人","电光超人古立特",15,"电脑少年，与古立特并肩作战","电光超人古立特","INFP")
+  C("翔直人","电光超人古立特",15,"电脑少年，与古立特并肩作战","电光超人古立特","INFP"),
+  C("响裕太","SSSS.GRIDMAN",16,"温柔善良、失忆的高中生","古立特人间体","INFP")
 ];
+
+const LIBS = {
+  rider:{name:"假面骑士", chars:LIB_RIDER},
+  sentai:{name:"超级战队", chars:LIB_SENTAI},
+  ultra:{name:"奥特曼", chars:LIB_ULTRA},
+  metal:{name:"金属英雄", chars:LIB_METAL},
+  garo:{name:"牙狼", chars:LIB_GARO},
+  other:{name:"其他特摄", chars:LIB_OTHER}
+};
 
 /* ================= 工具函数 ================= */
 function clamp(v){return Math.max(0,Math.min(100,v));}
@@ -414,9 +492,25 @@ function dist(a,b){let s=0;for(let i=0;i<7;i++){const d=a[i]-b[i];s+=d*d;}return
 
 /* ================= 状态 ================= */
 const app=document.getElementById("app");
-let state={screen:"start",order:[],q:0,answers:{}};
+let state={screen:"start",order:[],q:0,answers:{},libs:{rider:true,sentai:true,ultra:true,metal:true,garo:true,other:true}};
 
+function getPool(){
+  let pool=[];
+  for(const id in LIBS){
+    if(state.libs[id]) pool=pool.concat(LIBS[id].chars);
+  }
+  return pool;
+}
+function toggleLib(id){
+  state.libs[id]=!state.libs[id];
+  render();
+}
+function allLibs(val){
+  for(const id in LIBS) state.libs[id]=val;
+  render();
+}
 function start(){
+  if(getPool().length===0){ alert("请至少选择一个作品库！"); return; }
   state.screen="quiz";
   state.order=[...Q.keys()].sort(()=>Math.random()-.5);
   state.answers={};
@@ -435,7 +529,6 @@ function prev(){
 }
 
 /* ================= 计分 ================= */
-/* 选项索引 0/1/2/3 对应分值 +2/+1/-1/-2 */
 const SCORE=[2,1,-1,-2];
 function compute(){
   const sum={};
@@ -447,7 +540,6 @@ function compute(){
     const s=sum[k]||0;
     return Math.round((s+12)/24*100);
   });
-  /* 仅内部用于确定人格类型名，不对外显示字母 */
   const letters=(vec[1]>=50?"E":"I")+(vec[5]>=50?"N":"S")+(vec[2]>=50?"F":"T")+(vec[3]>=50?"J":"P");
   return {vec,letters};
 }
@@ -481,20 +573,22 @@ function reasonFor(vec,cv,mode){
 function showResult(){
   const {vec,letters}=compute();
   const T=TYPES[letters];
-  const sameType=CH.filter(c=>c.t===letters);
+  const pool=getPool();
+  const sameType=pool.filter(c=>c.t===letters);
+  const cands=sameType.length?sameType:pool;
   let main=null,bd=1e9;
-  sameType.forEach(c=>{const d=dist(vec,charVec(c));if(d<bd){bd=d;main=c;}});
+  cands.forEach(c=>{const d=dist(vec,charVec(c));if(d<bd){bd=d;main=c;}});
   const mv=charVec(main);
 
-  const others=CH.filter(c=>c!==main).map(c=>({c,d:dist(vec,charVec(c))})).sort((a,b)=>a.d-b.d);
-  const similar=others.slice(0,3);
-  const opposite=others.slice(-3).reverse();
+  const others=pool.filter(c=>c!==main).map(c=>({c,d:dist(vec,charVec(c))})).sort((a,b)=>a.d-b.d);
+  const similar=others.slice(0,Math.min(3,others.length));
+  const opposite=others.slice(-Math.min(3,others.length)).reverse();
 
   state.screen="result";
-  renderResult(main,mv,vec,letters,similar,opposite);
+  renderResult(main,mv,vec,letters,similar,opposite,pool.length);
 }
 
-function renderResult(main,mv,vec,letters,similar,opposite){
+function renderResult(main,mv,vec,letters,similar,opposite,poolSize){
   const T=TYPES[letters];
   const shareText="【特摄人格测试】我的特摄人格是「"+T.n+"」，最像的特摄角色是《"+main.w+"》的 "+main.n+"！";
   let bars="";
@@ -540,16 +634,16 @@ function renderResult(main,mv,vec,letters,similar,opposite){
     '<div class="bars">'+bars+'</div>'+
 
     '<div class="section-title">相似角色</div>'+
-    '<div class="cards">'+simCards+'</div>'+
+    '<div class="cards">'+(simCards||'<div class="count-note">所选作品库角色不足，无法生成相似角色</div>')+'</div>'+
 
     '<div class="section-title">相对角色（与你最不同）</div>'+
-    '<div class="cards">'+oppCards+'</div>'+
+    '<div class="cards">'+(oppCards||'<div class="count-note">所选作品库角色不足，无法生成相对角色</div>')+'</div>'+
 
     '<div class="actions">'+
       '<button class="btn main" onclick="shareResult(\''+shareText.replace(/'/g,"")+'\')">复制结果</button>'+
       '<button class="btn ghost" onclick="start()">重新测试</button>'+
     '</div>'+
-    '<div class="count-note">本测试含 '+Q.length+' 道题 · '+CH.length+' 位特摄角色 · 数据仅供娱乐</div>'+
+    '<div class="count-note">本测试含 '+Q.length+' 道题 · 本次从所选作品库 '+poolSize+' 位角色中抽取 · 数据仅供娱乐</div>'+
   '</div>';
   window.scrollTo({top:0});
 }
@@ -564,22 +658,45 @@ function shareResult(text){
 }
 
 /* ================= 渲染 ================= */
+function libCardsHTML(){
+  let s="";
+  for(const id in LIBS){
+    const lib=LIBS[id];
+    const on=state.libs[id];
+    s+='<div class="lib-card'+(on?' on':'')+'" onclick="toggleLib(\''+id+'\')">'+
+       '<div class="l-name">'+lib.name+'</div>'+
+       '<div class="l-count">'+lib.chars.length+' 位角色</div>'+
+       '<div class="l-check">'+(on?'✓ 已选择':'点击选择')+'</div>'+
+       '</div>';
+  }
+  return s;
+}
+
 function render(){
   if(state.screen==="start"){
+    const poolSize=getPool().length;
     app.innerHTML=
     '<div class="screen">'+
       '<div class="hero">'+
         '<div class="badge">特摄人格测试 · TOKUSATSU PERSONALITY</div>'+
         '<h1>测测你是<br><span class="grad">哪个特摄角色</span></h1>'+
-        '<p class="sub">'+Q.length+' 道情景选择题 · 类 MBTI 人格测试<br>7 维特摄特质 · 从 '+CH.length+' 位角色中找到与你最像的那一个</p>'+
+        '<p class="sub">'+Q.length+' 道情景选择题 · 类 MBTI 人格测试 · 7 维特摄特质<br>先选择作品库，结果将从你选择的作品库中抽取</p>'+
+      '</div>'+
+      '<div class="lib-wrap">'+
+        '<div class="lib-head">'+
+          '<div class="t">选择作品库</div>'+
+          '<div class="r">'+
+            '<button class="btn ghost small" onclick="allLibs(true)">全选</button>'+
+            '<button class="btn ghost small" onclick="allLibs(false)">清空</button>'+
+          '</div>'+
+        '</div>'+
+        '<div class="lib-cards">'+libCardsHTML()+'</div>'+
+        '<div class="pool-note">当前将从 <b>'+poolSize+'</b> 位角色中匹配你的特摄人格</div>'+
+      '</div>'+
+      '<div class="tips" style="margin-top:26px;">'+
         '<button class="btn main" onclick="start()">开始变身测试</button>'+
       '</div>'+
-      '<div class="tips">涵盖作品系列</div>'+
-      '<div class="series">'+
-        '<span>假面骑士</span><span>超级战队</span><span>奥特曼</span>'+
-        '<span>金属英雄</span><span>牙狼</span><span>人造人间</span>'+
-        '<span>电光超人古立特</span><span>魔弹战记</span>'+
-      '</div>'+
+      '<div class="tips">点击作品库卡片即可选择或取消 · 至少选择一个才能开始</div>'+
     '</div>';
   }else if(state.screen==="quiz"){
     const qi=state.order[state.q];
